@@ -325,7 +325,7 @@ char** SplitStr(char *str, char spliter, int *cnt)
   char ** dst = NULL;
   char *ptr1, *ptr2;
   int idx;
-  *cnt = 0;//词缀个数
+  *cnt = 0;//´Ê×º¸öÊý
   
   ptr2 = str;
   ptr1 = strchr(ptr2, spliter);
@@ -366,7 +366,7 @@ char** SplitStr(char *str, char spliter, int *cnt)
     if(ptr1 != ptr2)
     {
       dst[idx] = (char*)calloc(ptr1 - ptr2 + 1, sizeof(char));
-      strncpy(dst[idx], ptr2, ptr1 - ptr2);//按个数分别存入二维矩阵 行数为cnt data从左往右 按行存放
+      strncpy(dst[idx], ptr2, ptr1 - ptr2);//°´¸öÊý·Ö±ð´æÈë¶þÎ¬¾ØÕó ÐÐÊýÎªcnt data´Ó×óÍùÓÒ °´ÐÐ´æ·Å
       idx++;
     }
     ptr2 = ptr1 + 1;
@@ -399,7 +399,7 @@ void LoadMapData(){
   fseek(fmap, 0, SEEK_SET);
   map_size = 0;
   while(1){
-    if(NULL == fgets(str, MAX_MAP_STRING, fmap)) break;  //按流读取一行
+    if(NULL == fgets(str, MAX_MAP_STRING, fmap)) break;  //°´Á÷¶ÁÈ¡Ò»ÐÐ
     char *ptr;
     ptr = strchr(str, spliter);
     if(ptr - str + 1 <= 1)continue;//remove useless lines
@@ -420,7 +420,7 @@ void LoadMapData(){
   map_size = 0;
   while(1){
     if(NULL == fgets(str, MAX_MAP_STRING, fmap)) break;
-    StrReplace(str, "\r\n","");      //替换换行回车
+    StrReplace(str, "\r\n","");      //Ìæ»»»»ÐÐ»Ø³µ
     // printf("[Debug] str = %s\n", str);
     char **mPtr = NULL;
     int mCnt;
@@ -467,6 +467,7 @@ void LoadMapData(){
         effCnt = 0;
         for(idx = 0; idx < wordCnt; idx++)
         {
+        //  char *tmpMainWord = subPtr[idx];
           long long ComponetWord = SearchVocab(subPtr[idx]);
           if(ComponetWord != -1 && ComponetWord != 0){
             wordMap[map_size].Component[effCnt].position = ComponetWord;
@@ -735,7 +736,7 @@ void *TrainModelThread(void *id) {
           for (c = 0; c < dim; c++) { morpheme[c] = 0; normalizedWord[c] = 0; }
           for (c = 0; c < dim; c++) morpheme[c] = syn0[c + last_word * dim];
 
-          for (c = 0; c < dim; c++) { ComponentComp[c] = 0;}
+          for (c = 0; c < dim; c++) ComponentComp[c] = 0;
 
           ComWeight = 0;
 
@@ -765,7 +766,7 @@ void *TrainModelThread(void *id) {
               for (c = 0; c < dim; c++) normalizedMorpheme[c] = syn0[c + ComponentWord * dim] / len; //normalization
 
               for (c = 0; c < dim; c++) sim += normalizedWord[c] * normalizedMorpheme[c];
-              sim = sim < 0 ? -sim : sim;
+              sim = sim < 0 ? 0 : sim;
               //sim = (1 + sim) / 2.0;
               vocab[last_word].Component[curIdx].weight = sim;
 
@@ -777,11 +778,9 @@ void *TrainModelThread(void *id) {
 
 		  
           int norm = 1;
-          // real sumWeight = ComWeight;
-          if(ComCnt != 0){
+          if(ComCnt != 0 && ComWeight != 0){
             for (c = 0; c < dim; c++)
-             // printf("[Debug] ComWeight: %f\n", ComWeight);
-              morpheme[c] += (ComponentComp[c]) / ComWeight; //wegihted averaging
+              morpheme[c] += ComponentComp[c] / ComWeight; //wegihted averaging
             norm = 2;
           }
 
@@ -845,6 +844,7 @@ void *TrainModelThread(void *id) {
 
           if(ComCnt != 0){
             for(curIdx = 0; curIdx < ComCnt; curIdx++){
+              if(vocab[last_word].Component[curIdx].weight == 0) continue;
               long long ComponentWord = vocab[last_word].Component[curIdx].position;
               for (c = 0; c < dim; c++) syn0[c + ComponentWord * dim] += neu1e[c];
             }
@@ -935,13 +935,14 @@ void TrainModel() {
   fo = fopen(output_file, "wb");
   if (classes == 0) {
     // Save the word vectors
+
 	  //modification begin
     fprintf(fo, "%lld %lld\n", vocab_size, dim); //disable the input of vocab_size and dim
 	  //modification end
     for (a = 0; a < vocab_size; a++) {
       fprintf(fo, "%s ", vocab[a].word);
       if (binary) for (b = 0; b < dim; b++) fwrite(&syn0[a * dim + b], sizeof(real), 1, fo);
-      else for (b = 0; b < dim; b++) fprintf(fo, "%lf ", syn0[a * dim + b]); 
+      else for (b = 0; b < dim; b++) fprintf(fo, "%lf ", syn0[a * dim + b]);
       fprintf(fo, "\n");
     }
 
