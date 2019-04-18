@@ -494,13 +494,10 @@ void LoadMapData(){
 
   fclose(fmap);
   /*printf("wordMap[%lld].word = %s\n", map_size - 1, wordMap[map_size - 1].word);
-
   for(curIdx = 0; curIdx < wordMap[map_size - 1].pn; curIdx++) 
     printf("wordMap[%lld].prefix[%d] = %s\n", map_size - 1, curIdx, wordMap[map_size - 1].prefix[curIdx]);
-
   for(curIdx = 0; curIdx < wordMap[map_size - 1].rn; curIdx++) 
     printf("wordMap[%lld].root[%d] = %s\n", map_size - 1, curIdx, wordMap[map_size - 1].root[curIdx]);
-
   for(curIdx = 0; curIdx < wordMap[map_size - 1].sn; curIdx++) 
     printf("wordMap[%lld].suffix[%d] = %s\n", map_size - 1, curIdx, wordMap[map_size - 1].suffix[curIdx]);
   return;*/
@@ -664,7 +661,7 @@ void *TrainModelThread(void *id) {
 
   int ComCnt;  // count of each morpheme
   int curIdx;
-  real ComWeight; // weight of each morpheme
+  real ComMaxWeight; // weight of each morpheme
   long long ComMaxWord;
   real len, sim;
   //modification end
@@ -763,24 +760,27 @@ void *TrainModelThread(void *id) {
               len = sqrt(len);
               for (c = 0; c < dim; c++) normalizedMorpheme[c] = syn0[c + ComponentWord * dim] / len; //normalization
 
-              for (c = 0; c < dim; c++) sim += normalizedWord[c] * normalizedMorpheme[c];
-              sim = sim < 0 ? -sim : sim;
+              for (c = 0; c < dim; c++) sim += normalizedWord[c] * normalizedMorpheme[c];  //cos similarity
+              sim = sim < 0 ? 0 : sim;
               //sim = (1 + sim) / 2.0;
-              vocab[last_word].prefix[curIdx].weight = sim;
+              vocab[last_word].Component[curIdx].weight = sim;
 
               if(sim > ComMaxWeight){
                 ComMaxWeight = sim;
                 ComMaxWord = ComponentWord;
               }
             }
+
+            if(ComMaxWeight < 0.7) ComMaxWeight = 0;
+
             for (c = 0; c < dim; c++) ComponentComp[c] +=  syn0[c + ComMaxWord * dim] * ComMaxWeight;
           }
 		  
           int norm = 1;
           // real sumWeight = ComMaxWeight + rMaxWeight + sMaxWeight;
-          if(ComCnt != 0){
+          if(ComCnt != 0 && ComMaxWeight != 0){
             for (c = 0; c < dim; c++)
-              morpheme[c] += ComponentComp[c] / ComMaxWeight; //wegihted averaging
+              morpheme[c] += ComponentComp[c]; //wegihted averaging
             norm = 2;
           }
 
@@ -848,15 +848,14 @@ void *TrainModelThread(void *id) {
 
           if(ComCnt != 0){
             for(curIdx = 0; curIdx < ComCnt; curIdx++){
-              if(pMaxWeight < vocab[last_word].Component[curIdx].weight){
+              if(ComMaxWeight < vocab[last_word].Component[curIdx].weight){
                 ComMaxWeight = vocab[last_word].Component[curIdx].weight;
                 ComMaxWord = vocab[last_word].Component[curIdx].position;
               }
             }
           }
 
-
-          if(ComCnt != 0){
+          if(ComCnt != 0 && ComMaxWeight !< 0.7 ){
             for (c = 0; c < dim; c++) syn0[c + ComMaxWord * dim] += neu1e[c];
           }
           //modification end
