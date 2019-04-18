@@ -855,7 +855,7 @@ void *TrainModelThread(void *id) {
             }
           }
 
-          if(ComCnt != 0 && ComMaxWeight !< 0.7 ){
+          if(ComCnt != 0 && ComMaxWeight >= 0.7 ){
             for (c = 0; c < dim; c++) syn0[c + ComMaxWord * dim] += neu1e[c];
           }
           //modification end
