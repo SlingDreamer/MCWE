@@ -474,7 +474,7 @@ void LoadMapData(){
             effCnt++;
           }
         }
-        wordMap[map_size].pn = effCnt;
+        wordMap[map_size].ComponentNum = effCnt;
 
         for(idx = 0; idx < wordCnt; idx++){
           free(subPtr[idx]);
@@ -736,7 +736,7 @@ void *TrainModelThread(void *id) {
             for(curIdx = 0; curIdx < ComCnt; curIdx++){
               long long ComponentWord = vocab[last_word].Component[curIdx].position;
               //printf("[Debug] TrainModelThread-prefix: %lld\n", prefixWord);
-              for (c = 0; c < dim; c++) ComponentComp[c] +=  syn0[c + ComponentWord * dim]; // ´æÖüÖ÷³É·Ö´ÊÏòÁ¿Êý×é
+              for (c = 0; c < dim; c++) ComponentComp[c] +=  syn0[c + ComponentWord * dim]; // Â´Ã¦Ã–Ã¼Ã–Ã·Â³Ã‰Â·Ã–Â´ÃŠÃÃ²ÃÂ¿ÃŠÃ½Ã—Ã©
             }
           }
 		  
