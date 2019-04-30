@@ -20,7 +20,7 @@ machine translation ..... (and so on) over traditional one-hot representations.
 Among many word embedding models,Continuous Bag-of-Word (CBOW), Skip-gram (Mikolov et al.,2013a), Global Vectors (GloVe) (Penningtonet al., 2014) is popular 
 because of their simplicity and efficiency.
 The idea of those algorithms are mainly based on the distributed hypothesis which means words that are used and occur in the same contexts tend to purport similar meanings. 
-[Harris, Z. (1954). "Distributional structure". Word. 10 (23): 146¨C162. doi:10.1080/00437956.1954.11659520].
+[Harris, Z. (1954). "Distributional structure". Word. 10 (23): 146â€“162. doi:10.1080/00437956.1954.11659520].
 However, these models only focus on word level information,and do not pay attention to the fine-grained morphological information inside the words or the characters,
 such as componets of Chinese characters or English morphemes.
 
@@ -28,7 +28,7 @@ such as componets of Chinese characters or English morphemes.
 Usually a character consists of more commonly two or more components which may have meanings related to the character,
 using a variety of different principles[wiki written chinese https://en.wikipedia.org/wiki/Written_Chinese]
 That means Chinese words themselves are often composed of Chinese characters and subcharacter compoents,including rich semantic information.
-    (ÒıÓÃÂÛÎÄ)£¨¹ıÈ¥Ê½£©
+    (å¼•ç”¨è®ºæ–‡)ï¼ˆè¿‡å»å¼ï¼‰
  
   Previous researchers have done some works by using the rich information inside Chinese for word embeddings enhancement with internal morphological semantics.
 (Li et al.  Component-Enhanced Chinese Character Embeddings) used the radicals to enhance the Chinese character embeddings.
@@ -45,14 +45,14 @@ and proposed the JWE model to jointly learn Chinese word and character embedding
 
    However, the subcharacter compoents of a character contain a lot of unwanted noise information,
 so we explored a new direction to integrate several word components into main-component.
-%Chinese characters contain elements and radicals£¬just as Chinese contains Chinese characters.
+%Chinese characters contain elements and radicalsï¼Œjust as Chinese contains Chinese characters.
 Chinese characters are composed of components and radicals,and a component of the complex subword item can be a simple Chinese character.
 In our model,the subcharacter components of characters can be roughly divided into two types: main-component and radical.
 The main-component which consists of several components indicates the baisc meaning of a character while the radical indicates some attribute meanings of a character.
-For example,"ÖÇ (intelligence)¡± is divided into the subcharacter components "Ê¸(arrow)","¿Ú(mouth)" and "ÈÕ(sun)" 
-where "Ê¸(arrow)" and "¿Ú(mouth)" are the components and ÈÕ(sun) is the radical of character "ÖÇ (intelligence)".
-All these subcharacter components mentioned above may be not relevant to the semantics of the character "ÖÇ (intelligence)".
-However, the main-component "Öª(wisdom)" consisting of several small components is closely related to the meaning of the charactor. 
+For example,"æ™º (intelligence)â€ is divided into the subcharacter components "çŸ¢(arrow)","å£(mouth)" and "æ—¥(sun)" 
+where "çŸ¢(arrow)" and "å£(mouth)" are the components and æ—¥(sun) is the radical of character "æ™º (intelligence)".
+All these subcharacter components mentioned above may be not relevant to the semantics of the character "æ™º (intelligence)".
+However, the main-component "çŸ¥(wisdom)" consisting of several small components is closely related to the meaning of the charactor. 
 %Based on this, we have proposed .....
 
     In this paper, we have modified the CBOW model in the word2vec source code[https://code.google.com/p/word2vec], 
@@ -65,7 +65,7 @@ In addition,we create a word map to describe the relationship between Chinese wo
 
 Through our model, the rich implicit information in Chinese is fully utilized and the similarities between words and words is improved.%
 %//Using our model, we can strengthen the similarity between words and words more effectively.
-%£¨¹±Ï×£©1.¹¹½¨ººÓïÖ÷³É·Ömap±í£»2.attention»úÖÆÒıÓÃ 3.ÓĞºÜÇ¿µÄÍØÕ¹ĞÔ£¨CWE£©
+%ï¼ˆè´¡çŒ®ï¼‰1.æ„å»ºæ±‰è¯­ä¸»æˆåˆ†mapè¡¨ï¼›2.attentionæœºåˆ¶å¼•ç”¨ 3.æœ‰å¾ˆå¼ºçš„æ‹“å±•æ€§ï¼ˆCWEï¼‰
 Our contributions of this paper can be summarized as follows:
 
 1.Rather than directly leverage the components of the word itself, we provide a method to use the latent meanings of the main-components and radicals to train the word embedding.
@@ -78,7 +78,7 @@ Through the attention mechanism, we focus on the latent meanings of higher contr
 
 *******************************
 
-2.My model(map±íĞèÒª¾«È·µÄ±ê×¢Òşº¬´ÊÒå,¶ÔÄ£ĞÍÓ°ÏìºÜ´ó)
+2.My model(mapè¡¨éœ€è¦ç²¾ç¡®çš„æ ‡æ³¨éšå«è¯ä¹‰,å¯¹æ¨¡å‹å½±å“å¾ˆå¤§)
 In this section, we introduce our Main-Component Word Embedding models(MCWEs),named MCWE-Soft Attention(MCWE-SA) and MCWE-Hard Attention(MCWE-HA),
 which is based on CBOW model(Mikolov et al., 2013a).
 It should be noted that our models directly uses the internal meanings of the Chinese characters,rather than directly using the characters or componets of the word themselves.
@@ -104,7 +104,7 @@ We denote sim() as a method to measure the similarity between Chinese words and 
 Formally, a context word wj is represented as
 
 
-¹«Ê½¼û±¾×Ó
+å…¬å¼è§æœ¬å­
 
 
 where v_{w_i} is the word embedding of w_i,\hat v_{x_{i}} is the the updated word embedding of w_i,
@@ -117,18 +117,18 @@ N_i is the number of latent meanings whose cos value between w_i is greater than
 
 
 
-MCWE-SA£º
+MCWE-SAï¼š
 
 Through observation, we found that most Chinese words have more than one latent meaning with their main-component,
-but some latent meanings have low correlation with target words(the corresponding word).For example,main-component "Öª(knowledge)" means "" ¡¢"" and "".
-As Fig.3 shows,for the item "ÖÇ»Û(intelligence)" ¡ª¡ª{[],[],[],[],[],[],[],[]} in the word map,each latent meaning has a bias on the word "ÖÇ»Û(intelligence)".
+but some latent meanings have low correlation with target words(the corresponding word).For example,main-component "çŸ¥(knowledge)" means "" ã€"" and "".
+As Fig.3 shows,for the item "æ™ºæ…§(intelligence)" â€”â€”{[],[],[],[],[],[],[],[]} in the word map,each latent meaning has a bias on the word "æ™ºæ…§(intelligence)".
 Therefore, we assign different weights to each latent meaning based on the idea of soft attention model.
 We measure the weights of latent meanings by calculating the cosine similarity between the corresponding latent meanings and the target word where cosine similarity is usually used to measure the similarity between word embeddings.
 Furthermore,we remove the negatively correlated latent meaning.
 Hence, at the input layer, the modified embedding of xi can be expressed as
 
-¹«Ê½¼û±¾
-Let Sim(¡¤) denotes the function to calculate the similarity between meanings of Chinese words and characters, we use cosine distance as the distance metric.
+å…¬å¼è§æœ¬
+Let Sim(Â·) denotes the function to calculate the similarity between meanings of Chinese words and characters, we use cosine distance as the distance metric.
 The i-th latent meaning of the main-component of Chinese character c are ci.
 
 
@@ -138,9 +138,9 @@ In order to further reduce the impact of irrelevant latent meanings to the word,
 We only choose the latent meaning which have the greatest similarity to the Chinese word.
 According to experimental experience, we only retain the latent meaning of similarity with token xi greater than 0.5.
 And MCWE-HA is mathematically defined as
-¹«Ê½£¨3£©
+å…¬å¼ï¼ˆ3ï¼‰
 
-where we only keep values with cos£¨Vxi,Vm£© greater than 0.5 for comparison. 
+where we only keep values with cosï¼ˆVxi,Vmï¼‰ greater than 0.5 for comparison. 
 
 
 
@@ -168,7 +168,7 @@ Similarly, we obtained the core latent meaning of 57 radicals from XXX.
 Although this process costs manpower and time, it can be done once and for all for each languag because it has the same knowledge base.
 When we choose a Chinese charactor,its main-component and radical will be selected and further replaced by their latent meanings.
 
-(ÎªÁË¸ü¿ìµÄÑµÁ·ËÙ¶È ÎÒÃÇµÄÄ£ĞÍ²ÉÓÃÁËCBOW×÷Îª»ù´¡)
+(ä¸ºäº†æ›´å¿«çš„è®­ç»ƒé€Ÿåº¦ æˆ‘ä»¬çš„æ¨¡å‹é‡‡ç”¨äº†CBOWä½œä¸ºåŸºç¡€)
 
 Parameter Settings:
 (-cbow 1 -size 200 -window 5 -negative 10 -hs 0 -sample 1e-4 -threads 25 -binary 0 -iter 15 -alpha 0.025)
@@ -196,20 +196,20 @@ This experiment is used to evaluate the semantic relevance of generated word emb
 
 For Chinese word similarity, we employ two differnet manually-annotated datasets,wordsim-240 and wordsim-296 provided by (Chen et al., 2015).
 These datasets are composed of word pairs and are manually labeled with the similarity scores for each word pair.
-We utilize the cosine similarity to measure the similarity of each word pair, and the Spearman¡¯s rank correlation coefficient (p) is employed to evaluate our calculation results and human scores.
+We utilize the cosine similarity to measure the similarity of each word pair, and the Spearmanâ€™s rank correlation coefficient (p) is employed to evaluate our calculation results and human scores.
 More details of these datasets are shown in Table 1.
 
 
 4.4.2 Syntactic Analogy
 
 This task examines the quality of word embeddings by discovering the semantic inferential capability between pairs of words.
-The core task of syntactic analogy is to answer the questions like "ÑÅµä(Athens) is to Ï£À°(Greece) as ¶«¾©(Tokyo) is to ÈÕ±¾(Japan)" where ÈÕ±¾(Japan) is the answer we hope to get.
-This means that the model get the answer correctly if the similarity of "vector(Ï£À°) - vector(ÑÅµä) + vector(¶«¾©)" and vector(ÈÕ±¾) is the largest among all words.
+The core task of syntactic analogy is to answer the questions like "é›…å…¸(Athens) is to å¸Œè…Š(Greece) as ä¸œäº¬(Tokyo) is to æ—¥æœ¬(Japan)" where æ—¥æœ¬(Japan) is the answer we hope to get.
+This means that the model get the answer correctly if the similarity of "vector(å¸Œè…Š) - vector(é›…å…¸) + vector(ä¸œäº¬)" and vector(æ—¥æœ¬) is the largest among all words.
 
-£¨we use the Chinese word analogy dataset introduced by (Chen et al., 2015), the dataset is divided into adjectives, nouns and verbs.
+ï¼ˆwe use the Chinese word analogy dataset introduced by (Chen et al., 2015), the dataset is divided into adjectives, nouns and verbs.
 which consists of 1,124 tuples of words and each tuple contains
-4 words, coming from three different categories:¡°Capital¡± (677 tuples), ¡°State¡± (175 tuples), and¡°Family¡± (272 tuples). Our training corpus covers
-all the testing words.£©³ö×Ôjwe
+4 words, coming from three different categories:â€œCapitalâ€ (677 tuples), â€œStateâ€ (175 tuples), andâ€œFamilyâ€ (272 tuples). Our training corpus covers
+all the testing words.ï¼‰å‡ºè‡ªjwe
 
 It contains 3 analogy types: (1) capitals of countries (687 groups); (2) states/provinces of cities (175 groups); and (3) family words (240 groups). The learning corpus covers
 more than 97% of all the testing words
@@ -260,13 +260,13 @@ References
 
 Tomas Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean. 2013a. Efficient estimation of word representations in vector space. arXiv preprint arXiv:1301.3781.
 Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg S Corrado,and Jeff Dean. 2013b. Distributed representations of words and phrases and their compositionality.In Advances in neural information processing
-systems, pages 3111¨C3119.
+systems, pages 3111â€“3119.
 Tomas Mikolov, Wen-tau Yih, and Geoffrey Zweig.2013c. Linguistic regularities in continuous space word representations. In Proceedings of the 2013 Conference of the North American Chapter of the
-Association for Computational Linguistics: Human Language Technologies, pages 746¨C751.
+Association for Computational Linguistics: Human Language Technologies, pages 746â€“751.
 
 
 %CWE
-\bibitem{ref1}Xinxiong Chen, Lei Xu, Zhiyuan Liu, Maosong Sun,and Huanbo Luan. 2015. Joint learning of character and word embeddings. In Proceedings of IJCAI,pages 1236¨C1242.
+\bibitem{ref1}Xinxiong Chen, Lei Xu, Zhiyuan Liu, Maosong Sun,and Huanbo Luan. 2015. Joint learning of character and word embeddings. In Proceedings of IJCAI,pages 1236â€“1242.
 
 %GWE
 Tzu-Ray Su and Hung-Yi Lee. 2017. Learning chinese word representations from glyphs of characters. EMNLP.
