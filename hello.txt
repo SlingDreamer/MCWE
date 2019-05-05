@@ -103,8 +103,8 @@ MCWE-SA：
 
 
 Through observation, we found that most Chinese words have more than one latent meaning with their main-component,
-but some latent meanings have low correlation with the target word(the corresponding word).For example,main-component "知(knowledge)" means "" 、"" and "".
-As Fig.3 shows,for the item "智慧(intelligence)" ——{[],[],[],[],[],[],[],[]} in the word map,each latent meaning has a bias on the word "智慧(intelligence)".
+but some latent meanings have low correlation with the target word(the corresponding word).For example,main-component "知(know)" means "学识(knowledge)" and "了解(understand)".
+As Fig.3 shows,for the item "智慧(intelligence)" ——{[学识(knowledge)],[了解(understand)],[太阳(sun)],[时间(time)],[白天(day)],[聪慧(clever)],[扫把(broom)],[思想(thought)],[心脏(heart)],[感情(feeling)]} in the word map,each latent meaning has a bias on the word "智慧(intelligence)".
 Therefore, we assign different weights to each latent meaning based on the idea of soft attention model.
 We measure the weights of latent meanings by calculating the cosine similarity between the corresponding latent meanings and the target word where cosine similarity is usually used to measure the similarity between word embeddings.
 
@@ -291,9 +291,3 @@ Association for Computational Linguistics: Human Language Technologies, pages 74
 
 %GWE
 Tzu-Ray Su and Hung-Yi Lee. 2017. Learning chinese word representations from glyphs of characters. EMNLP.
-
-
-
-
-
-
